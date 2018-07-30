@@ -32,7 +32,7 @@ public class QuestionsListActivity extends BaseActivity implements QuestionsList
         super.onCreate(savedInstanceState);
 
         mViewMvc = new QuestionsListViewMvcImpl(LayoutInflater.from(this), null);
-        mViewMvc.registerLister(this);
+        mViewMvc.registerListener(this);
 
         mStackoverflowApi = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)

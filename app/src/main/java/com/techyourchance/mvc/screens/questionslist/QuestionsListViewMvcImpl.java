@@ -39,7 +39,7 @@ public class QuestionsListViewMvcImpl implements
     }
 
     @Override
-    public void registerLister(Listener listener) {
+    public void registerListener(Listener listener) {
         mListeners.add(listener);
     }
 
