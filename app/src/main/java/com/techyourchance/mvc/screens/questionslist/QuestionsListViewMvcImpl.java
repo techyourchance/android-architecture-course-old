@@ -10,18 +10,17 @@ import android.view.ViewGroup;
 
 import com.techyourchance.mvc.R;
 import com.techyourchance.mvc.questions.Question;
+import com.techyourchance.mvc.screens.common.BaseObservableViewMvc;
 import com.techyourchance.mvc.screens.common.BaseViewMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsListViewMvcImpl extends BaseViewMvc implements
-        QuestionsListViewMvc, QuestionsRecyclerAdapter.Listener {
+public class QuestionsListViewMvcImpl extends BaseObservableViewMvc<QuestionsListViewMvc.Listener>
+        implements QuestionsListViewMvc, QuestionsRecyclerAdapter.Listener {
 
     private RecyclerView mRecyclerQuestions;
     private QuestionsRecyclerAdapter mAdapter;
-
-    private final List<Listener> mListeners = new ArrayList<>(1);
 
     public QuestionsListViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
         setRootView(inflater.inflate(R.layout.layout_questions_list, parent, false));
@@ -33,18 +32,8 @@ public class QuestionsListViewMvcImpl extends BaseViewMvc implements
     }
 
     @Override
-    public void registerListener(Listener listener) {
-        mListeners.add(listener);
-    }
-
-    @Override
-    public void unregisterListener(Listener listener) {
-        mListeners.remove(listener);
-    }
-
-    @Override
     public void onQuestionClicked(Question question) {
-        for (Listener listener : mListeners) {
+        for (Listener listener : getListeners()) {
             listener.onQuestionClicked(question);
         }
     }
