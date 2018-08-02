@@ -31,7 +31,7 @@ public class QuestionsListActivity extends BaseActivity implements QuestionsList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mViewMvc = new QuestionsListViewMvcImpl(LayoutInflater.from(this), null);
+        mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionsListViewMvc(null);
         mViewMvc.registerListener(this);
 
         mStackoverflowApi = getCompositionRoot().getStackoverflowApi();
