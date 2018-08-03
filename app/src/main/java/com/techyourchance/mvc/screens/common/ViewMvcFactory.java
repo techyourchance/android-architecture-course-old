@@ -4,6 +4,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.techyourchance.mvc.screens.questiondetails.QuestionDetailsViewMvc;
+import com.techyourchance.mvc.screens.questiondetails.QuestionDetailsViewMvcImpl;
 import com.techyourchance.mvc.screens.questionslist.QuestionsListItemViewMvc;
 import com.techyourchance.mvc.screens.questionslist.QuestionsListItemViewMvcImpl;
 import com.techyourchance.mvc.screens.questionslist.QuestionsListViewMvc;
@@ -23,5 +25,9 @@ public class ViewMvcFactory {
 
     public QuestionsListItemViewMvc getQuestionsListItemViewMvc(@Nullable ViewGroup parent) {
         return new QuestionsListItemViewMvcImpl(mLayoutInflater, parent);
+    }
+
+    public QuestionDetailsViewMvc getQuestionDetailsViewMvc(@Nullable ViewGroup parent) {
+        return new QuestionDetailsViewMvcImpl(mLayoutInflater, parent);
     }
 }
