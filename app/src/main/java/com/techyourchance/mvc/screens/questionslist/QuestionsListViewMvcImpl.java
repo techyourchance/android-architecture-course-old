@@ -12,6 +12,7 @@ import com.techyourchance.mvc.R;
 import com.techyourchance.mvc.questions.Question;
 import com.techyourchance.mvc.screens.common.BaseObservableViewMvc;
 import com.techyourchance.mvc.screens.common.BaseViewMvc;
+import com.techyourchance.mvc.screens.common.ViewMvcFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +23,12 @@ public class QuestionsListViewMvcImpl extends BaseObservableViewMvc<QuestionsLis
     private RecyclerView mRecyclerQuestions;
     private QuestionsRecyclerAdapter mAdapter;
 
-    public QuestionsListViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
+    public QuestionsListViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent, ViewMvcFactory viewMvcFactory) {
         setRootView(inflater.inflate(R.layout.layout_questions_list, parent, false));
 
         mRecyclerQuestions = findViewById(R.id.recycler_questions);
         mRecyclerQuestions.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new QuestionsRecyclerAdapter(inflater, this);
+        mAdapter = new QuestionsRecyclerAdapter(this, viewMvcFactory);
         mRecyclerQuestions.setAdapter(mAdapter);
     }
 
