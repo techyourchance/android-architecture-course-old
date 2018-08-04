@@ -37,6 +37,7 @@ public class QuestionsListActivity extends BaseActivity implements
         super.onStart();
         mFetchLastActiveQuestionsUseCase.registerListener(this);
 
+        mViewMvc.showProgressIndication();
         mFetchLastActiveQuestionsUseCase.fetchLastActiveQuestionsAndNotify();
     }
 
@@ -53,11 +54,13 @@ public class QuestionsListActivity extends BaseActivity implements
 
     @Override
     public void onLastActiveQuestionsFetched(List<Question> questions) {
+        mViewMvc.hideProgressIndication();
         mViewMvc.bindQuestions(questions);
     }
 
     @Override
     public void onLastActiveQuestionsFetchFailed() {
+        mViewMvc.hideProgressIndication();
         Toast.makeText(this, R.string.error_network_call_failed, Toast.LENGTH_SHORT).show();
     }
 }
