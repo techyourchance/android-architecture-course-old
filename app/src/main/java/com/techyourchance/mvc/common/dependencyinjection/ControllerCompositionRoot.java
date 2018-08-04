@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 
 import com.techyourchance.mvc.networking.StackoverflowApi;
+import com.techyourchance.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.mvc.screens.common.ViewMvcFactory;
 
@@ -17,7 +18,7 @@ public class ControllerCompositionRoot {
         mActivity = activity;
     }
 
-    public StackoverflowApi getStackoverflowApi() {
+    private StackoverflowApi getStackoverflowApi() {
         return mCompositionRoot.getStackoverflowApi();
     }
 
@@ -31,5 +32,9 @@ public class ControllerCompositionRoot {
 
     public FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
         return new FetchQuestionDetailsUseCase(getStackoverflowApi());
+    }
+
+    public FetchLastActiveQuestionsUseCase getFetchLastActiveQuestionsUseCase() {
+        return new FetchLastActiveQuestionsUseCase(getStackoverflowApi());
     }
 }
