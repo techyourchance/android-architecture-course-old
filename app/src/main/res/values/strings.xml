@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MVC</string>
     <string name="error_network_call_failed">network call failed</string>
+    <string name="questions_list_screen_title">LATEST QUESTIONS</string>
 </resources>

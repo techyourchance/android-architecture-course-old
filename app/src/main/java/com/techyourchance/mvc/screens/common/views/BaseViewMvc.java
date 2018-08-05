@@ -1,6 +1,7 @@
 package com.techyourchance.mvc.screens.common.views;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
 import android.view.View;
 
 public abstract class BaseViewMvc implements ViewMvc {
@@ -22,5 +23,9 @@ public abstract class BaseViewMvc implements ViewMvc {
 
     protected Context getContext() {
         return getRootView().getContext();
+    }
+
+    protected String getString(@StringRes int id) {
+        return getContext().getString(id);
     }
 }
