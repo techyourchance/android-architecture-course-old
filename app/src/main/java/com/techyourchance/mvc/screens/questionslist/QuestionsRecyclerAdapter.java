@@ -2,12 +2,11 @@ package com.techyourchance.mvc.screens.questionslist;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.techyourchance.mvc.questions.Question;
 import com.techyourchance.mvc.screens.common.ViewMvcFactory;
+import com.techyourchance.mvc.screens.questionslist.questionslistitem.QuestionsListItemViewMvc;
 
 import java.util.ArrayList;
 import java.util.List;

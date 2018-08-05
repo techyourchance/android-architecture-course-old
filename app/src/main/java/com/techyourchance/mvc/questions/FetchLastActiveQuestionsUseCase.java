@@ -2,8 +2,8 @@ package com.techyourchance.mvc.questions;
 
 import com.techyourchance.mvc.common.BaseObservable;
 import com.techyourchance.mvc.common.Constants;
-import com.techyourchance.mvc.networking.QuestionSchema;
-import com.techyourchance.mvc.networking.QuestionsListResponseSchema;
+import com.techyourchance.mvc.networking.questions.QuestionSchema;
+import com.techyourchance.mvc.networking.questions.QuestionsListResponseSchema;
 import com.techyourchance.mvc.networking.StackoverflowApi;
 
 import java.util.ArrayList;

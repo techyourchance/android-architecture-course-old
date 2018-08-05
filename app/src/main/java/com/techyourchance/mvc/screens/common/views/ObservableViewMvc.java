@@ -1,4 +1,4 @@
-package com.techyourchance.mvc.screens.common;
+package com.techyourchance.mvc.screens.common.views;
 
 public interface ObservableViewMvc<ListenerType> extends ViewMvc {
 
