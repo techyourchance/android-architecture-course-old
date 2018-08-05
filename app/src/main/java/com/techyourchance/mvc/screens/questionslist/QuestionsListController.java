@@ -26,10 +26,10 @@ public class QuestionsListController  implements
 
     public void bindView(QuestionsListViewMvc viewMvc) {
         mViewMvc = viewMvc;
-        mViewMvc.registerListener(this);
     }
 
     public void onStart() {
+        mViewMvc.registerListener(this);
         mFetchLastActiveQuestionsUseCase.registerListener(this);
 
         mViewMvc.showProgressIndication();
@@ -37,6 +37,7 @@ public class QuestionsListController  implements
     }
 
     public void onStop() {
+        mViewMvc.unregisterListener(this);
         mFetchLastActiveQuestionsUseCase.unregisterListener(this);
     }
 
