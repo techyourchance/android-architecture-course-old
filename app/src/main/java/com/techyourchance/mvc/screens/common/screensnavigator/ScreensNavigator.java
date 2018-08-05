@@ -1,4 +1,4 @@
-package com.techyourchance.mvc.screens.common;
+package com.techyourchance.mvc.screens.common.screensnavigator;
 
 import android.content.Context;
 

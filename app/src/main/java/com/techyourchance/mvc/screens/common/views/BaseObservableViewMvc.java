@@ -1,4 +1,4 @@
-package com.techyourchance.mvc.screens.common;
+package com.techyourchance.mvc.screens.common.views;
 
 import java.util.Collections;
 import java.util.HashSet;

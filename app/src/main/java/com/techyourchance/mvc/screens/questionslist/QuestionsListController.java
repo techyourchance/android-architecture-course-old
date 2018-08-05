@@ -2,8 +2,8 @@ package com.techyourchance.mvc.screens.questionslist;
 
 import com.techyourchance.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.techyourchance.mvc.questions.Question;
-import com.techyourchance.mvc.screens.common.MessagesDisplayer;
-import com.techyourchance.mvc.screens.common.ScreensNavigator;
+import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
+import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 
 import java.util.List;
 
@@ -12,16 +12,16 @@ public class QuestionsListController  implements
 
     private final FetchLastActiveQuestionsUseCase mFetchLastActiveQuestionsUseCase;
     private final ScreensNavigator mScreensNavigator;
-    private final MessagesDisplayer mMessagesDisplayer;
+    private final ToastsHelper mToastsHelper;
 
     private QuestionsListViewMvc mViewMvc;
 
     public QuestionsListController(FetchLastActiveQuestionsUseCase fetchLastActiveQuestionsUseCase,
                                    ScreensNavigator screensNavigator,
-                                   MessagesDisplayer messagesDisplayer) {
+                                   ToastsHelper toastsHelper) {
         mFetchLastActiveQuestionsUseCase = fetchLastActiveQuestionsUseCase;
         mScreensNavigator = screensNavigator;
-        mMessagesDisplayer = messagesDisplayer;
+        mToastsHelper = toastsHelper;
     }
 
     public void bindView(QuestionsListViewMvc viewMvc) {
@@ -55,6 +55,6 @@ public class QuestionsListController  implements
     @Override
     public void onLastActiveQuestionsFetchFailed() {
         mViewMvc.hideProgressIndication();
-        mMessagesDisplayer.showUseCaseError();
+        mToastsHelper.showUseCaseError();
     }
 }

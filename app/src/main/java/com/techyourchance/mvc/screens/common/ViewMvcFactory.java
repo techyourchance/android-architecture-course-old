@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 
 import com.techyourchance.mvc.screens.questiondetails.QuestionDetailsViewMvc;
 import com.techyourchance.mvc.screens.questiondetails.QuestionDetailsViewMvcImpl;
-import com.techyourchance.mvc.screens.questionslist.QuestionsListItemViewMvc;
-import com.techyourchance.mvc.screens.questionslist.QuestionsListItemViewMvcImpl;
+import com.techyourchance.mvc.screens.questionslist.questionslistitem.QuestionsListItemViewMvc;
+import com.techyourchance.mvc.screens.questionslist.questionslistitem.QuestionsListItemViewMvcImpl;
 import com.techyourchance.mvc.screens.questionslist.QuestionsListViewMvc;
 import com.techyourchance.mvc.screens.questionslist.QuestionsListViewMvcImpl;
 

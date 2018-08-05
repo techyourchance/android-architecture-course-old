@@ -1,8 +1,8 @@
 package com.techyourchance.mvc.questions;
 
 import com.techyourchance.mvc.common.BaseObservable;
-import com.techyourchance.mvc.networking.QuestionDetailsResponseSchema;
-import com.techyourchance.mvc.networking.QuestionSchema;
+import com.techyourchance.mvc.networking.questions.QuestionDetailsResponseSchema;
+import com.techyourchance.mvc.networking.questions.QuestionSchema;
 import com.techyourchance.mvc.networking.StackoverflowApi;
 
 import retrofit2.Call;

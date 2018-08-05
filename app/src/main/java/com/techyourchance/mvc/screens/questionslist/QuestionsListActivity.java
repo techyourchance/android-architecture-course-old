@@ -2,7 +2,7 @@ package com.techyourchance.mvc.screens.questionslist;
 
 import android.os.Bundle;
 
-import com.techyourchance.mvc.screens.common.BaseActivity;
+import com.techyourchance.mvc.screens.common.controllers.BaseActivity;
 
 public class QuestionsListActivity extends BaseActivity {
 
