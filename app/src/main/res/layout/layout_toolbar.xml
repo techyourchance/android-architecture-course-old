@@ -5,6 +5,18 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:padding="16dp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_arrow_back"
+        android:visibility="gone"/>
+
+
     <TextView
         android:id="@+id/txt_toolbar_title"
         android:layout_width="wrap_content"
