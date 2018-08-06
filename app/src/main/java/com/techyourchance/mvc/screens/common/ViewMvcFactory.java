@@ -29,7 +29,7 @@ public class ViewMvcFactory {
     }
 
     public QuestionDetailsViewMvc getQuestionDetailsViewMvc(@Nullable ViewGroup parent) {
-        return new QuestionDetailsViewMvcImpl(mLayoutInflater, parent);
+        return new QuestionDetailsViewMvcImpl(mLayoutInflater, parent, this);
     }
 
     public ToolbarViewMvc getToolbarViewMvc(@Nullable ViewGroup parent) {
