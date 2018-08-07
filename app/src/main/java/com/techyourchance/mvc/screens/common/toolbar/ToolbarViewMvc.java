@@ -18,12 +18,14 @@ public class ToolbarViewMvc extends BaseViewMvc {
 
     private final TextView mTxtTitle;
     private final ImageButton mBtnBack;
+    private final ImageButton mBtnHamburger;
 
     private NavigateUpClickListener mNavigateUpClickListener;
 
     public ToolbarViewMvc(LayoutInflater inflater, ViewGroup parent) {
         setRootView(inflater.inflate(R.layout.layout_toolbar, parent, false));
         mTxtTitle = findViewById(R.id.txt_toolbar_title);
+        mBtnHamburger = findViewById(R.id.btn_hamburger);
         mBtnBack = findViewById(R.id.btn_back);
         mBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
