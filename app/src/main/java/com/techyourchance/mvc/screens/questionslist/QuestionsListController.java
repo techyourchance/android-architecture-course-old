@@ -47,6 +47,11 @@ public class QuestionsListController  implements
     }
 
     @Override
+    public void onQuestionsListClicked() {
+        // this is the questions list screen - no-op
+    }
+
+    @Override
     public void onLastActiveQuestionsFetched(List<Question> questions) {
         mViewMvc.hideProgressIndication();
         mViewMvc.bindQuestions(questions);
