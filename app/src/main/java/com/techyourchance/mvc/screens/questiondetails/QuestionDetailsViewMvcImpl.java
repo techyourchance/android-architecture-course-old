@@ -11,12 +11,14 @@ import android.widget.TextView;
 import com.techyourchance.mvc.R;
 import com.techyourchance.mvc.questions.QuestionDetails;
 import com.techyourchance.mvc.screens.common.ViewMvcFactory;
+import com.techyourchance.mvc.screens.common.navdrawer.BaseNavDrawerViewMvc;
+import com.techyourchance.mvc.screens.common.navdrawer.DrawerItems;
 import com.techyourchance.mvc.screens.common.toolbar.ToolbarViewMvc;
 import com.techyourchance.mvc.screens.common.views.BaseObservableViewMvc;
 import com.techyourchance.mvc.screens.common.views.BaseViewMvc;
 
 
-public class QuestionDetailsViewMvcImpl extends BaseObservableViewMvc<QuestionDetailsViewMvc.Listener>
+public class QuestionDetailsViewMvcImpl extends BaseNavDrawerViewMvc<QuestionDetailsViewMvc.Listener>
         implements QuestionDetailsViewMvc {
 
 
@@ -27,8 +29,10 @@ public class QuestionDetailsViewMvcImpl extends BaseObservableViewMvc<QuestionDe
     private final TextView mTxtQuestionBody;
     private final ProgressBar mProgressBar;
 
-    public QuestionDetailsViewMvcImpl(LayoutInflater inflater, ViewGroup container, ViewMvcFactory viewMvcFactory) {
-        setRootView(inflater.inflate(R.layout.layout_question_details, container, false));
+    public QuestionDetailsViewMvcImpl(LayoutInflater inflater, ViewGroup parent, ViewMvcFactory viewMvcFactory) {
+        super(inflater, parent);
+
+        setRootView(inflater.inflate(R.layout.layout_question_details, parent, false));
 
         mTxtQuestionTitle = findViewById(R.id.txt_question_title);
         mTxtQuestionBody = findViewById(R.id.txt_question_body);
@@ -67,6 +71,14 @@ public class QuestionDetailsViewMvcImpl extends BaseObservableViewMvc<QuestionDe
             mTxtQuestionTitle.setText(Html.fromHtml(questionTitle));
             mTxtQuestionBody.setText(Html.fromHtml(questionBody));
         }
+    }
+
+    @Override
+    protected void onDrawerItemClicked(DrawerItems item) {
+        for (Listener listener : getListeners()) {
+            listener.onDrawerItemClicked(item);
+        }
+
     }
 
     @Override

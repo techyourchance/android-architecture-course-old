@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.mvc.questions.QuestionDetails;
 import com.techyourchance.mvc.screens.common.controllers.BaseActivity;
+import com.techyourchance.mvc.screens.common.navdrawer.DrawerItems;
+import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 
 public class QuestionDetailsActivity extends BaseActivity implements
@@ -24,6 +26,7 @@ public class QuestionDetailsActivity extends BaseActivity implements
     private FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
 
     private ToastsHelper mToastsHelper;
+    private ScreensNavigator mScreensNavigator;
 
     private QuestionDetailsViewMvc mViewMvc;
 
@@ -32,6 +35,7 @@ public class QuestionDetailsActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         mFetchQuestionDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
         mToastsHelper = getCompositionRoot().getMessagesDisplayer();
+        mScreensNavigator = getCompositionRoot().getScreensNavigator();
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(null);
 
         setContentView(mViewMvc.getRootView());
@@ -75,4 +79,20 @@ public class QuestionDetailsActivity extends BaseActivity implements
         onBackPressed();
     }
 
+    @Override
+    public void onDrawerItemClicked(DrawerItems item) {
+        switch (item) {
+            case QUESTIONS_LIST:
+                mScreensNavigator.toQuestionsListClearTop();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mViewMvc.isDrawerOpen()) {
+            mViewMvc.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
