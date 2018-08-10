@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".screens.questionslist.QuestionsListActivity"
+            android:name=".screens.common.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
             <intent-filter>
@@ -24,11 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".screens.questiondetails.QuestionDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true"/>
 
     </application>
 

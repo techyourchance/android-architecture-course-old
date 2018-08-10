@@ -9,13 +9,12 @@ import android.view.ViewGroup;
 
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.mvc.questions.QuestionDetails;
+import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
 import com.techyourchance.mvc.screens.common.controllers.BackPressedListener;
 import com.techyourchance.mvc.screens.common.controllers.BaseFragment;
 import com.techyourchance.mvc.screens.common.navdrawer.DrawerItems;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
-
-import static com.techyourchance.mvc.screens.questiondetails.QuestionDetailsActivity.EXTRA_QUESTION_ID;
 
 public class QuestionDetailsFragment extends BaseFragment implements
         FetchQuestionDetailsUseCase.Listener, QuestionDetailsViewMvc.Listener, BackPressedListener {
@@ -34,6 +33,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     private ToastsHelper mToastsHelper;
     private ScreensNavigator mScreensNavigator;
+    private BackPressDispatcher mBackPressDispatcher;
 
     private QuestionDetailsViewMvc mViewMvc;
 
@@ -42,8 +42,9 @@ public class QuestionDetailsFragment extends BaseFragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         mFetchQuestionDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
-        mToastsHelper = getCompositionRoot().getMessagesDisplayer();
+        mToastsHelper = getCompositionRoot().getToastsHelper();
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
+        mBackPressDispatcher = getCompositionRoot().getBackPressDispatcher();
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
 
         return mViewMvc.getRootView();
@@ -54,6 +55,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         super.onStart();
         mFetchQuestionDetailsUseCase.registerListener(this);
         mViewMvc.registerListener(this);
+        mBackPressDispatcher.registerListener(this);
 
         mViewMvc.showProgressIndication();
         mFetchQuestionDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
@@ -64,6 +66,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         super.onStop();
         mFetchQuestionDetailsUseCase.unregisterListener(this);
         mViewMvc.unregisterListener(this);
+        mBackPressDispatcher.unregisterListener(this);
     }
 
     private String getQuestionId() {
@@ -91,7 +94,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
     public void onDrawerItemClicked(DrawerItems item) {
         switch (item) {
             case QUESTIONS_LIST:
-                mScreensNavigator.toQuestionsListClearTop();
+                mScreensNavigator.toQuestionsList();
         }
     }
 

@@ -1,12 +1,15 @@
 package com.techyourchance.mvc.common.dependencyinjection;
 
-import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
 import com.techyourchance.mvc.networking.StackoverflowApi;
 import com.techyourchance.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
+import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
+import com.techyourchance.mvc.screens.common.controllers.FragmentFrameWrapper;
 import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.techyourchance.mvc.screens.common.ViewMvcFactory;
@@ -15,15 +18,23 @@ import com.techyourchance.mvc.screens.questionslist.QuestionsListController;
 public class ControllerCompositionRoot {
 
     private final CompositionRoot mCompositionRoot;
-    private final Activity mActivity;
+    private final FragmentActivity mActivity;
 
-    public ControllerCompositionRoot(CompositionRoot compositionRoot, Activity activity) {
+    public ControllerCompositionRoot(CompositionRoot compositionRoot, FragmentActivity activity) {
         mCompositionRoot = compositionRoot;
         mActivity = activity;
     }
 
+    private FragmentActivity getActivity() {
+        return mActivity;
+    }
+
     private Context getContext() {
         return mActivity;
+    }
+
+    private FragmentManager getFragmentManager() {
+        return getActivity().getSupportFragmentManager();
     }
 
     private StackoverflowApi getStackoverflowApi() {
@@ -50,15 +61,24 @@ public class ControllerCompositionRoot {
         return new QuestionsListController(
                 getFetchLastActiveQuestionsUseCase(),
                 getScreensNavigator(),
-                getMessagesDisplayer()
+                getToastsHelper(),
+                getBackPressDispatcher()
         );
     }
 
-    public ToastsHelper getMessagesDisplayer() {
+    public ToastsHelper getToastsHelper() {
         return new ToastsHelper(getContext());
     }
 
     public ScreensNavigator getScreensNavigator() {
-        return new ScreensNavigator(getContext());
+        return new ScreensNavigator(getFragmentManager(), getFragmentFrameWrapper());
+    }
+
+    private FragmentFrameWrapper getFragmentFrameWrapper() {
+        return (FragmentFrameWrapper) getActivity();
+    }
+
+    public BackPressDispatcher getBackPressDispatcher() {
+        return (BackPressDispatcher) getActivity();
     }
 }

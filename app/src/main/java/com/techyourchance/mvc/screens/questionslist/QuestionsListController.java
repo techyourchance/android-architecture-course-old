@@ -2,26 +2,31 @@ package com.techyourchance.mvc.screens.questionslist;
 
 import com.techyourchance.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.techyourchance.mvc.questions.Question;
+import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
+import com.techyourchance.mvc.screens.common.controllers.BackPressedListener;
 import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 
 import java.util.List;
 
 public class QuestionsListController  implements
-        QuestionsListViewMvcImpl.Listener, FetchLastActiveQuestionsUseCase.Listener{
+        QuestionsListViewMvcImpl.Listener, FetchLastActiveQuestionsUseCase.Listener, BackPressedListener {
 
     private final FetchLastActiveQuestionsUseCase mFetchLastActiveQuestionsUseCase;
     private final ScreensNavigator mScreensNavigator;
     private final ToastsHelper mToastsHelper;
+    private final BackPressDispatcher mBackPressDispatcher;
 
     private QuestionsListViewMvc mViewMvc;
 
     public QuestionsListController(FetchLastActiveQuestionsUseCase fetchLastActiveQuestionsUseCase,
                                    ScreensNavigator screensNavigator,
-                                   ToastsHelper toastsHelper) {
+                                   ToastsHelper toastsHelper,
+                                   BackPressDispatcher backPressDispatcher) {
         mFetchLastActiveQuestionsUseCase = fetchLastActiveQuestionsUseCase;
         mScreensNavigator = screensNavigator;
         mToastsHelper = toastsHelper;
+        mBackPressDispatcher = backPressDispatcher;
     }
 
     public void bindView(QuestionsListViewMvc viewMvc) {
@@ -31,6 +36,7 @@ public class QuestionsListController  implements
     public void onStart() {
         mViewMvc.registerListener(this);
         mFetchLastActiveQuestionsUseCase.registerListener(this);
+        mBackPressDispatcher.registerListener(this);
 
         mViewMvc.showProgressIndication();
         mFetchLastActiveQuestionsUseCase.fetchLastActiveQuestionsAndNotify();
@@ -39,11 +45,12 @@ public class QuestionsListController  implements
     public void onStop() {
         mViewMvc.unregisterListener(this);
         mFetchLastActiveQuestionsUseCase.unregisterListener(this);
+        mBackPressDispatcher.unregisterListener(this);
     }
 
     @Override
     public void onQuestionClicked(Question question) {
-        mScreensNavigator.toDialogDetails(question.getId());
+        mScreensNavigator.toQuestionDetails(question.getId());
     }
 
     @Override
