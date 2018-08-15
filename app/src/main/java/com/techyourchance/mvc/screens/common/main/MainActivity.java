@@ -11,7 +11,8 @@ import com.techyourchance.mvc.R;
 import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
 import com.techyourchance.mvc.screens.common.controllers.BackPressedListener;
 import com.techyourchance.mvc.screens.common.controllers.BaseActivity;
-import com.techyourchance.mvc.screens.common.controllers.FragmentFrameWrapper;
+import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
+import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.techyourchance.mvc.screens.questionslist.QuestionsListFragment;
 
 import java.util.HashSet;
@@ -26,16 +27,17 @@ public class MainActivity extends BaseActivity implements BackPressDispatcher, F
     }
 
     private final Set<BackPressedListener> mBackPressedListeners = new HashSet<>();
+    private ScreensNavigator mScreensNavigator;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_content_frame);
-        QuestionsListFragment fragment;
+        mScreensNavigator = getCompositionRoot().getScreensNavigator();
+
         if (savedInstanceState == null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            fragment = new QuestionsListFragment();
-            ft.add(R.id.frame_content, fragment).commit();
+            mScreensNavigator.toQuestionsList();
         }
     }
 

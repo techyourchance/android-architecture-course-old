@@ -9,7 +9,8 @@ import com.techyourchance.mvc.networking.StackoverflowApi;
 import com.techyourchance.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
-import com.techyourchance.mvc.screens.common.controllers.FragmentFrameWrapper;
+import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameHelper;
+import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
 import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.techyourchance.mvc.screens.common.ViewMvcFactory;
@@ -71,7 +72,11 @@ public class ControllerCompositionRoot {
     }
 
     public ScreensNavigator getScreensNavigator() {
-        return new ScreensNavigator(getFragmentManager(), getFragmentFrameWrapper());
+        return new ScreensNavigator(getFragmentFrameHelper());
+    }
+
+    private FragmentFrameHelper getFragmentFrameHelper() {
+        return new FragmentFrameHelper(getActivity(), getFragmentFrameWrapper(), getFragmentManager());
     }
 
     private FragmentFrameWrapper getFragmentFrameWrapper() {
