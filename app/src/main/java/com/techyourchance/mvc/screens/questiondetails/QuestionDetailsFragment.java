@@ -87,7 +87,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     @Override
     public void onNavigateUpClicked() {
-        onBackPressed();
+        mScreensNavigator.navigateUp();
     }
 
     @Override
