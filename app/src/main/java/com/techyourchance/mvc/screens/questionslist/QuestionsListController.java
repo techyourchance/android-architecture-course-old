@@ -4,13 +4,13 @@ import com.techyourchance.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.techyourchance.mvc.questions.Question;
 import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
 import com.techyourchance.mvc.screens.common.controllers.BackPressedListener;
-import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
+import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 
 import java.util.List;
 
 public class QuestionsListController  implements
-        QuestionsListViewMvcImpl.Listener, FetchLastActiveQuestionsUseCase.Listener, BackPressedListener {
+        QuestionsListViewMvc.Listener, FetchLastActiveQuestionsUseCase.Listener, BackPressedListener {
 
     private final FetchLastActiveQuestionsUseCase mFetchLastActiveQuestionsUseCase;
     private final ScreensNavigator mScreensNavigator;
