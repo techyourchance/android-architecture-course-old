@@ -11,14 +11,11 @@ import android.widget.TextView;
 import com.techyourchance.mvc.R;
 import com.techyourchance.mvc.questions.QuestionDetails;
 import com.techyourchance.mvc.screens.common.ViewMvcFactory;
-import com.techyourchance.mvc.screens.common.navdrawer.BaseNavDrawerViewMvc;
-import com.techyourchance.mvc.screens.common.navdrawer.DrawerItems;
 import com.techyourchance.mvc.screens.common.toolbar.ToolbarViewMvc;
 import com.techyourchance.mvc.screens.common.views.BaseObservableViewMvc;
-import com.techyourchance.mvc.screens.common.views.BaseViewMvc;
 
 
-public class QuestionDetailsViewMvcImpl extends BaseNavDrawerViewMvc<QuestionDetailsViewMvc.Listener>
+public class QuestionDetailsViewMvcImpl extends BaseObservableViewMvc<QuestionDetailsViewMvc.Listener>
         implements QuestionDetailsViewMvc {
 
 
@@ -30,7 +27,6 @@ public class QuestionDetailsViewMvcImpl extends BaseNavDrawerViewMvc<QuestionDet
     private final ProgressBar mProgressBar;
 
     public QuestionDetailsViewMvcImpl(LayoutInflater inflater, ViewGroup parent, ViewMvcFactory viewMvcFactory) {
-        super(inflater, parent);
 
         setRootView(inflater.inflate(R.layout.layout_question_details, parent, false));
 
@@ -73,13 +69,6 @@ public class QuestionDetailsViewMvcImpl extends BaseNavDrawerViewMvc<QuestionDet
         }
     }
 
-    @Override
-    protected void onDrawerItemClicked(DrawerItems item) {
-        for (Listener listener : getListeners()) {
-            listener.onDrawerItemClicked(item);
-        }
-
-    }
 
     @Override
     public void showProgressIndication() {
