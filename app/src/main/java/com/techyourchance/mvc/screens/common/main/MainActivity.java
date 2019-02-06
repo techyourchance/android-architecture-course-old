@@ -12,33 +12,52 @@ import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
 import com.techyourchance.mvc.screens.common.controllers.BackPressedListener;
 import com.techyourchance.mvc.screens.common.controllers.BaseActivity;
 import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
+import com.techyourchance.mvc.screens.common.navdrawer.NavDrawerHelper;
+import com.techyourchance.mvc.screens.common.navdrawer.NavDrawerViewMvc;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.techyourchance.mvc.screens.questionslist.QuestionsListFragment;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class MainActivity extends BaseActivity implements BackPressDispatcher, FragmentFrameWrapper {
-
-    public static void startClearTop(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
-    }
+public class MainActivity extends BaseActivity implements
+        BackPressDispatcher,
+        FragmentFrameWrapper,
+        NavDrawerViewMvc.Listener,
+        NavDrawerHelper {
 
     private final Set<BackPressedListener> mBackPressedListeners = new HashSet<>();
     private ScreensNavigator mScreensNavigator;
 
+    private NavDrawerViewMvc mViewMvc;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_content_frame);
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
+        mViewMvc = getCompositionRoot().getViewMvcFactory().getNavDrawerViewMvc(null);
+        setContentView(mViewMvc.getRootView());
 
         if (savedInstanceState == null) {
             mScreensNavigator.toQuestionsList();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mViewMvc.registerListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mViewMvc.unregisterListener(this);
+    }
+
+    @Override
+    public void onQuestionsListClicked() {
+        mScreensNavigator.toQuestionsList();
     }
 
     @Override
@@ -66,6 +85,21 @@ public class MainActivity extends BaseActivity implements BackPressDispatcher, F
 
     @Override
     public FrameLayout getFragmentFrame() {
-        return findViewById(R.id.frame_content);
+        return mViewMvc.getFragmentFrame();
+    }
+
+    @Override
+    public void openDrawer() {
+        mViewMvc.openDrawer();
+    }
+
+    @Override
+    public void closeDrawer() {
+        mViewMvc.closeDrawer();
+    }
+
+    @Override
+    public boolean isDrawerOpen() {
+        return mViewMvc.isDrawerOpen();
     }
 }

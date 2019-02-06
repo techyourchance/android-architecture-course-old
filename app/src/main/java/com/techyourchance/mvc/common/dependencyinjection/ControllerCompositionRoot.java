@@ -11,6 +11,7 @@ import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
 import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameHelper;
 import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
+import com.techyourchance.mvc.screens.common.navdrawer.NavDrawerHelper;
 import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.techyourchance.mvc.screens.common.ViewMvcFactory;
@@ -47,7 +48,11 @@ public class ControllerCompositionRoot {
     }
 
     public ViewMvcFactory getViewMvcFactory() {
-        return new ViewMvcFactory(getLayoutInflater());
+        return new ViewMvcFactory(getLayoutInflater(), getNavDrawerHelper());
+    }
+
+    private NavDrawerHelper getNavDrawerHelper() {
+        return (NavDrawerHelper) getActivity();
     }
 
     public FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
@@ -62,8 +67,7 @@ public class ControllerCompositionRoot {
         return new QuestionsListController(
                 getFetchLastActiveQuestionsUseCase(),
                 getScreensNavigator(),
-                getToastsHelper(),
-                getBackPressDispatcher()
+                getToastsHelper()
         );
     }
 
