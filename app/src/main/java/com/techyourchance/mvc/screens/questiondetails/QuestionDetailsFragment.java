@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.mvc.questions.QuestionDetails;
 import com.techyourchance.mvc.screens.common.controllers.BaseFragment;
+import com.techyourchance.mvc.screens.common.dialogs.DialogsManager;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 
@@ -28,8 +29,8 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     private FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
 
-    private ToastsHelper mToastsHelper;
     private ScreensNavigator mScreensNavigator;
+    private DialogsManager mDialogsManager;
 
     private QuestionDetailsViewMvc mViewMvc;
 
@@ -38,8 +39,8 @@ public class QuestionDetailsFragment extends BaseFragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         mFetchQuestionDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
-        mToastsHelper = getCompositionRoot().getToastsHelper();
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
+        mDialogsManager = getCompositionRoot().getDialogsManager();
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
 
         return mViewMvc.getRootView();
@@ -75,7 +76,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
     @Override
     public void onQuestionDetailsFetchFailed() {
         mViewMvc.hideProgressIndication();
-        mToastsHelper.showUseCaseError();
+        mDialogsManager.showUseCaseErrorDialog(null);
     }
 
     @Override

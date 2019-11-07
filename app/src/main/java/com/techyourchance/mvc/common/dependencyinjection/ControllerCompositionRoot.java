@@ -9,6 +9,7 @@ import com.techyourchance.mvc.networking.StackoverflowApi;
 import com.techyourchance.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
+import com.techyourchance.mvc.screens.common.dialogs.DialogsManager;
 import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameHelper;
 import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
 import com.techyourchance.mvc.screens.common.navdrawer.NavDrawerHelper;
@@ -89,5 +90,9 @@ public class ControllerCompositionRoot {
 
     public BackPressDispatcher getBackPressDispatcher() {
         return (BackPressDispatcher) getActivity();
+    }
+
+    public DialogsManager getDialogsManager() {
+        return new DialogsManager(getContext(), getFragmentManager());
     }
 }
