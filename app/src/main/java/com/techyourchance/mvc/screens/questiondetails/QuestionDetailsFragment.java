@@ -10,12 +10,16 @@ import android.view.ViewGroup;
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.mvc.questions.QuestionDetails;
 import com.techyourchance.mvc.screens.common.controllers.BaseFragment;
+import com.techyourchance.mvc.screens.common.dialogs.DialogsEventBus;
 import com.techyourchance.mvc.screens.common.dialogs.DialogsManager;
+import com.techyourchance.mvc.screens.common.dialogs.promptdialog.PromptDialogEvent;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 
 public class QuestionDetailsFragment extends BaseFragment implements
-        FetchQuestionDetailsUseCase.Listener, QuestionDetailsViewMvc.Listener {
+        FetchQuestionDetailsUseCase.Listener,
+        QuestionDetailsViewMvc.Listener,
+        DialogsEventBus.Listener {
 
     private static final String ARG_QUESTION_ID = "ARG_QUESTION_ID";
 
@@ -31,6 +35,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     private ScreensNavigator mScreensNavigator;
     private DialogsManager mDialogsManager;
+    private DialogsEventBus mDialogsEventBus;
 
     private QuestionDetailsViewMvc mViewMvc;
 
@@ -41,6 +46,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mFetchQuestionDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
         mDialogsManager = getCompositionRoot().getDialogsManager();
+        mDialogsEventBus = getCompositionRoot().getDialogsEventBus();
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
 
         return mViewMvc.getRootView();
@@ -51,6 +57,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         super.onStart();
         mFetchQuestionDetailsUseCase.registerListener(this);
         mViewMvc.registerListener(this);
+        mDialogsEventBus.registerListener(this);
 
         mViewMvc.showProgressIndication();
         mFetchQuestionDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
@@ -61,6 +68,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         super.onStop();
         mFetchQuestionDetailsUseCase.unregisterListener(this);
         mViewMvc.unregisterListener(this);
+        mDialogsEventBus.unregisterListener(this);
     }
 
     private String getQuestionId() {
@@ -77,6 +85,19 @@ public class QuestionDetailsFragment extends BaseFragment implements
     public void onQuestionDetailsFetchFailed() {
         mViewMvc.hideProgressIndication();
         mDialogsManager.showUseCaseErrorDialog(null);
+    }
+
+    @Override
+    public void onDialogEvent(Object event) {
+        if (event instanceof PromptDialogEvent) {
+            switch (((PromptDialogEvent) event).getClickedButton()) {
+                case POSITIVE:
+                    mFetchQuestionDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+                    break;
+                case NEGATIVE:
+                    break;
+            }
+        }
     }
 
     @Override
