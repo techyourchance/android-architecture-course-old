@@ -14,7 +14,6 @@ import com.techyourchance.mvc.screens.common.dialogs.DialogsEventBus;
 import com.techyourchance.mvc.screens.common.dialogs.DialogsManager;
 import com.techyourchance.mvc.screens.common.dialogs.promptdialog.PromptDialogEvent;
 import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
-import com.techyourchance.mvc.screens.common.toastshelper.ToastsHelper;
 
 public class QuestionDetailsFragment extends BaseFragment implements
         FetchQuestionDetailsUseCase.Listener,
@@ -25,6 +24,8 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     private static final String DIALOG_ID_NETWORK_ERROR = "DIALOG_ID_NETWORK_ERROR";
 
+    private static final String SAVED_STATE_SCREEN_STATE = "SAVED_STATE_SCREEN_STATE";
+
     public static QuestionDetailsFragment newInstance(String questionId) {
         Bundle args = new Bundle();
         args.putString(ARG_QUESTION_ID, questionId);
@@ -33,13 +34,26 @@ public class QuestionDetailsFragment extends BaseFragment implements
         return fragment;
     }
 
-    private FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
+    private enum ScreenState {
+        IDLE, QUESTION_DETAILS_SHOWN, NETWORK_ERROR
+    }
 
+    private FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
     private ScreensNavigator mScreensNavigator;
     private DialogsManager mDialogsManager;
     private DialogsEventBus mDialogsEventBus;
 
     private QuestionDetailsViewMvc mViewMvc;
+
+    private ScreenState mScreenState = ScreenState.IDLE;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            mScreenState = (ScreenState) savedInstanceState.getSerializable(SAVED_STATE_SCREEN_STATE);
+        }
+    }
 
     @Nullable
     @Override
@@ -61,10 +75,8 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mViewMvc.registerListener(this);
         mDialogsEventBus.registerListener(this);
 
-        mViewMvc.showProgressIndication();
-
-        if (!DIALOG_ID_NETWORK_ERROR.equals(mDialogsManager.getShownDialogTag())) {
-            mFetchQuestionDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+        if (mScreenState != ScreenState.NETWORK_ERROR) {
+            fetchQuestionDetailsAndNotify();
         }
     }
 
@@ -76,18 +88,31 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mDialogsEventBus.unregisterListener(this);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SAVED_STATE_SCREEN_STATE, mScreenState);
+    }
+
+    private void fetchQuestionDetailsAndNotify() {
+        mViewMvc.showProgressIndication();
+        mFetchQuestionDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+    }
+
     private String getQuestionId() {
         return getArguments().getString(ARG_QUESTION_ID);
     }
 
     @Override
     public void onQuestionDetailsFetched(QuestionDetails questionDetails) {
+        mScreenState = ScreenState.QUESTION_DETAILS_SHOWN;
         mViewMvc.hideProgressIndication();
         mViewMvc.bindQuestion(questionDetails);
     }
 
     @Override
     public void onQuestionDetailsFetchFailed() {
+        mScreenState = ScreenState.NETWORK_ERROR;
         mViewMvc.hideProgressIndication();
         mDialogsManager.showUseCaseErrorDialog(DIALOG_ID_NETWORK_ERROR);
     }
@@ -97,9 +122,11 @@ public class QuestionDetailsFragment extends BaseFragment implements
         if (event instanceof PromptDialogEvent) {
             switch (((PromptDialogEvent) event).getClickedButton()) {
                 case POSITIVE:
-                    mFetchQuestionDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+                    mScreenState = ScreenState.IDLE;
+                    fetchQuestionDetailsAndNotify();
                     break;
                 case NEGATIVE:
+                    mScreenState = ScreenState.IDLE;
                     break;
             }
         }
