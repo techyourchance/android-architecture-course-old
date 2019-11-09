@@ -69,7 +69,8 @@ public class ControllerCompositionRoot {
         return new QuestionsListController(
                 getFetchLastActiveQuestionsUseCase(),
                 getScreensNavigator(),
-                getToastsHelper()
+                getDialogsManager(),
+                getDialogsEventBus()
         );
     }
 
