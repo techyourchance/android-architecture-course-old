@@ -23,6 +23,8 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     private static final String ARG_QUESTION_ID = "ARG_QUESTION_ID";
 
+    private static final String DIALOG_ID_NETWORK_ERROR = "DIALOG_ID_NETWORK_ERROR";
+
     public static QuestionDetailsFragment newInstance(String questionId) {
         Bundle args = new Bundle();
         args.putString(ARG_QUESTION_ID, questionId);
@@ -60,7 +62,10 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mDialogsEventBus.registerListener(this);
 
         mViewMvc.showProgressIndication();
-        mFetchQuestionDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+
+        if (!DIALOG_ID_NETWORK_ERROR.equals(mDialogsManager.getShownDialogTag())) {
+            mFetchQuestionDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+        }
     }
 
     @Override
@@ -84,7 +89,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
     @Override
     public void onQuestionDetailsFetchFailed() {
         mViewMvc.hideProgressIndication();
-        mDialogsManager.showUseCaseErrorDialog(null);
+        mDialogsManager.showUseCaseErrorDialog(DIALOG_ID_NETWORK_ERROR);
     }
 
     @Override

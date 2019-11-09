@@ -3,6 +3,7 @@ package com.techyourchance.mvc.screens.common.dialogs;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.techyourchance.mvc.R;
@@ -30,5 +31,14 @@ public class DialogsManager {
 
     private String getString(int stringId) {
         return mContext.getString(stringId);
+    }
+
+    public @Nullable String getShownDialogTag() {
+        for (Fragment fragment : mFragmentManager.getFragments()) {
+            if (fragment instanceof BaseDialog) {
+                return fragment.getTag();
+            }
+        }
+        return null;
     }
 }
