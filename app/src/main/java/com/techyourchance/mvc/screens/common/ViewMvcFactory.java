@@ -4,6 +4,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.techyourchance.mvc.screens.common.dialogs.promptdialog.PromptViewMvc;
+import com.techyourchance.mvc.screens.common.dialogs.promptdialog.PromptViewMvcImpl;
 import com.techyourchance.mvc.screens.common.navdrawer.NavDrawerHelper;
 import com.techyourchance.mvc.screens.common.navdrawer.NavDrawerViewMvc;
 import com.techyourchance.mvc.screens.common.navdrawer.NavDrawerViewMvcImpl;
@@ -43,5 +45,9 @@ public class ViewMvcFactory {
 
     public NavDrawerViewMvc getNavDrawerViewMvc(@Nullable ViewGroup parent) {
         return new NavDrawerViewMvcImpl(mLayoutInflater, parent);
+    }
+
+    public PromptViewMvc getPromptViewMvc(@Nullable ViewGroup parent) {
+        return new PromptViewMvcImpl(mLayoutInflater, parent);
     }
 }
