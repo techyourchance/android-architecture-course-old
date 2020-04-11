@@ -78,7 +78,13 @@ public class MainActivity extends BaseActivity implements
                 isBackPressConsumedByAnyListener = true;
             }
         }
-        if (!isBackPressConsumedByAnyListener) {
+        if (isBackPressConsumedByAnyListener) {
+            return;
+        }
+
+        if (mViewMvc.isDrawerOpen()) {
+            mViewMvc.closeDrawer();
+        } else {
             super.onBackPressed();
         }
     }
