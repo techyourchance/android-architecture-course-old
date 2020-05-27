@@ -1,8 +1,12 @@
 package com.techyourchance.mvc.screens.questiondetails;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +29,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
     private static final String DIALOG_ID_NETWORK_ERROR = "DIALOG_ID_NETWORK_ERROR";
 
     private static final String SAVED_STATE_SCREEN_STATE = "SAVED_STATE_SCREEN_STATE";
+    public static final int REQUEST_CODE = 1001;
 
     public static QuestionDetailsFragment newInstance(String questionId) {
         Bundle args = new Bundle();
@@ -134,7 +139,30 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     @Override
     public void onLocationRequestClicked() {
-        
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mDialogsManager.showPermissionGrantedDialog(null);
+        } else {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            if (permissions.length < 1) {
+                throw new RuntimeException("no permissions on request result");
+            }
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mDialogsManager.showPermissionGrantedDialog(null);
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    mDialogsManager.showDeclinedDialog(null);
+                } else {
+                    mDialogsManager.showPermissionDeclinedCantAskMoreDialog(null);
+                }
+            }
+        }
     }
 
     @Override
