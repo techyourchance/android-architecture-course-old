@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
+import com.techyourchance.mvc.common.permissions.PermissionsHelper;
 import com.techyourchance.mvc.networking.StackoverflowApi;
 import com.techyourchance.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
@@ -100,5 +101,9 @@ public class ControllerCompositionRoot {
 
     public DialogsEventBus getDialogsEventBus() {
         return mCompositionRoot.getDialogsEventBus();
+    }
+
+    public PermissionsHelper getPermissionsHelper() {
+        return new PermissionsHelper(getActivity());
     }
 }

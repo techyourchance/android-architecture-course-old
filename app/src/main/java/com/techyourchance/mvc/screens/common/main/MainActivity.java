@@ -3,11 +3,13 @@ package com.techyourchance.mvc.screens.common.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.FrameLayout;
 
 import com.techyourchance.mvc.R;
+import com.techyourchance.mvc.common.permissions.PermissionsHelper;
 import com.techyourchance.mvc.screens.common.controllers.BackPressDispatcher;
 import com.techyourchance.mvc.screens.common.controllers.BackPressedListener;
 import com.techyourchance.mvc.screens.common.controllers.BaseActivity;
@@ -28,6 +30,7 @@ public class MainActivity extends BaseActivity implements
 
     private final Set<BackPressedListener> mBackPressedListeners = new HashSet<>();
     private ScreensNavigator mScreensNavigator;
+    private PermissionsHelper mPermissionsHelper;
 
     private NavDrawerViewMvc mViewMvc;
 
@@ -35,6 +38,7 @@ public class MainActivity extends BaseActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
+        mPermissionsHelper = getCompositionRoot().getPermissionsHelper();
         mViewMvc = getCompositionRoot().getViewMvcFactory().getNavDrawerViewMvc(null);
         setContentView(mViewMvc.getRootView());
 
@@ -87,6 +91,11 @@ public class MainActivity extends BaseActivity implements
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mPermissionsHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
