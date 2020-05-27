@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.techyourchance.mvc.common.permissions.PermissionsHelper;
 import com.techyourchance.mvc.questions.FetchQuestionDetailsUseCase;
 import com.techyourchance.mvc.questions.QuestionDetails;
 import com.techyourchance.mvc.screens.common.controllers.BaseFragment;
@@ -22,7 +23,8 @@ import com.techyourchance.mvc.screens.common.screensnavigator.ScreensNavigator;
 public class QuestionDetailsFragment extends BaseFragment implements
         FetchQuestionDetailsUseCase.Listener,
         QuestionDetailsViewMvc.Listener,
-        DialogsEventBus.Listener {
+        DialogsEventBus.Listener,
+        PermissionsHelper.Listener {
 
     private static final String ARG_QUESTION_ID = "ARG_QUESTION_ID";
 
@@ -47,6 +49,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
     private ScreensNavigator mScreensNavigator;
     private DialogsManager mDialogsManager;
     private DialogsEventBus mDialogsEventBus;
+    private PermissionsHelper mPermissionsHelper;
 
     private QuestionDetailsViewMvc mViewMvc;
 
@@ -58,18 +61,17 @@ public class QuestionDetailsFragment extends BaseFragment implements
         if (savedInstanceState != null) {
             mScreenState = (ScreenState) savedInstanceState.getSerializable(SAVED_STATE_SCREEN_STATE);
         }
+        mPermissionsHelper = getCompositionRoot().getPermissionsHelper();
+        mFetchQuestionDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
+        mScreensNavigator = getCompositionRoot().getScreensNavigator();
+        mDialogsManager = getCompositionRoot().getDialogsManager();
+        mDialogsEventBus = getCompositionRoot().getDialogsEventBus();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        mFetchQuestionDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
-        mScreensNavigator = getCompositionRoot().getScreensNavigator();
-        mDialogsManager = getCompositionRoot().getDialogsManager();
-        mDialogsEventBus = getCompositionRoot().getDialogsEventBus();
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
-
         return mViewMvc.getRootView();
     }
 
@@ -79,6 +81,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mFetchQuestionDetailsUseCase.registerListener(this);
         mViewMvc.registerListener(this);
         mDialogsEventBus.registerListener(this);
+        mPermissionsHelper.registerListener(this);
 
         if (mScreenState != ScreenState.NETWORK_ERROR) {
             fetchQuestionDetailsAndNotify();
@@ -91,6 +94,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mFetchQuestionDetailsUseCase.unregisterListener(this);
         mViewMvc.unregisterListener(this);
         mDialogsEventBus.unregisterListener(this);
+        mPermissionsHelper.unregisterListener(this);
     }
 
     @Override
@@ -139,29 +143,31 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     @Override
     public void onLocationRequestClicked() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+        if (mPermissionsHelper.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
             mDialogsManager.showPermissionGrantedDialog(null);
         } else {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+            mPermissionsHelper.requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_CODE);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onPermissionGranted(String permission, int requestCode) {
         if (requestCode == REQUEST_CODE) {
-            if (permissions.length < 1) {
-                throw new RuntimeException("no permissions on request result");
-            }
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mDialogsManager.showPermissionGrantedDialog(null);
-            } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    mDialogsManager.showDeclinedDialog(null);
-                } else {
-                    mDialogsManager.showPermissionDeclinedCantAskMoreDialog(null);
-                }
-            }
+            mDialogsManager.showPermissionGrantedDialog(null);
+        }
+    }
+
+    @Override
+    public void onPermissionDeclined(String permission, int requestCode) {
+        if (requestCode == REQUEST_CODE) {
+            mDialogsManager.showDeclinedDialog(null);
+        }
+    }
+
+    @Override
+    public void onPermissionDeclinedDontAskAgain(String permission, int requestCode) {
+        if (requestCode == REQUEST_CODE) {
+            mDialogsManager.showPermissionDeclinedCantAskMoreDialog(null);
         }
     }
 
