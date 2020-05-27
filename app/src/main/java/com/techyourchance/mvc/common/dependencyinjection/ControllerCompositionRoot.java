@@ -22,20 +22,18 @@ import com.techyourchance.mvc.screens.questionslist.QuestionsListController;
 
 public class ControllerCompositionRoot {
 
-    private final CompositionRoot mCompositionRoot;
-    private final FragmentActivity mActivity;
+    private final ActivityCompositionRoot mActivityCompositionRoot;
 
-    public ControllerCompositionRoot(CompositionRoot compositionRoot, FragmentActivity activity) {
-        mCompositionRoot = compositionRoot;
-        mActivity = activity;
+    public ControllerCompositionRoot(ActivityCompositionRoot activityCompositionRoot) {
+        mActivityCompositionRoot = activityCompositionRoot;
     }
 
     private FragmentActivity getActivity() {
-        return mActivity;
+        return mActivityCompositionRoot.getActivity();
     }
 
     private Context getContext() {
-        return mActivity;
+        return getActivity();
     }
 
     private FragmentManager getFragmentManager() {
@@ -43,7 +41,7 @@ public class ControllerCompositionRoot {
     }
 
     private StackoverflowApi getStackoverflowApi() {
-        return mCompositionRoot.getStackoverflowApi();
+        return mActivityCompositionRoot.getStackoverflowApi();
     }
 
     private LayoutInflater getLayoutInflater() {
@@ -100,10 +98,10 @@ public class ControllerCompositionRoot {
     }
 
     public DialogsEventBus getDialogsEventBus() {
-        return mCompositionRoot.getDialogsEventBus();
+        return mActivityCompositionRoot.getDialogsEventBus();
     }
 
     public PermissionsHelper getPermissionsHelper() {
-        return new PermissionsHelper(getActivity());
+        return mActivityCompositionRoot.getPermissionsHelper();
     }
 }

@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.techyourchance.mvc.common.CustomApplication;
 import com.techyourchance.mvc.common.dependencyinjection.ControllerCompositionRoot;
+import com.techyourchance.mvc.screens.common.main.MainActivity;
 
 public class BaseFragment extends Fragment {
 
@@ -12,8 +13,7 @@ public class BaseFragment extends Fragment {
     protected ControllerCompositionRoot getCompositionRoot() {
         if (mControllerCompositionRoot == null) {
             mControllerCompositionRoot = new ControllerCompositionRoot(
-                    ((CustomApplication) requireActivity().getApplication()).getCompositionRoot(),
-                    requireActivity()
+                    ((MainActivity) requireActivity()).getActivityCompositionRoot()
             );
         }
         return mControllerCompositionRoot;
