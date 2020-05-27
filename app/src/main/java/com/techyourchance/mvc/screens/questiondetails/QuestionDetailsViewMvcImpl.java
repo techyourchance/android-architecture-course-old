@@ -53,6 +53,15 @@ public class QuestionDetailsViewMvcImpl extends BaseObservableViewMvc<QuestionDe
                 }
             }
         });
+
+        mToolbarViewMvc.enableLocationRequestButtonAndListen(new ToolbarViewMvc.LocationRequestListener() {
+            @Override
+            public void onLocationRequestClicked() {
+                for (Listener listener : getListeners()) {
+                    listener.onLocationRequestClicked();
+                }
+            }
+        });
     }
 
     @Override

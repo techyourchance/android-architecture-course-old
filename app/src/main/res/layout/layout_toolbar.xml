@@ -40,4 +40,14 @@
         android:textColor="@color/white"
         android:textSize="20sp"/>
 
+    <ImageButton
+        android:id="@+id/btn_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:padding="16dp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_location"
+        android:visibility="gone"/>
+
 </RelativeLayout>

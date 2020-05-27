@@ -133,6 +133,11 @@ public class QuestionDetailsFragment extends BaseFragment implements
     }
 
     @Override
+    public void onLocationRequestClicked() {
+        
+    }
+
+    @Override
     public void onNavigateUpClicked() {
         mScreensNavigator.navigateUp();
     }
