@@ -8,4 +8,10 @@
     <string name="questions_list_screen_title">LATEST QUESTIONS</string>
     <string name="question_details_screen_title">QUESTION DETAILS</string>
     <string name="drawer_menu_item_questions_list">Questions list</string>
+
+    <string name="permission_dialog_title">Permission dialog</string>
+    <string name="permission_dialog_button_caption">OK</string>
+    <string name="permission_dialog_granted_message">Permission granted</string>
+    <string name="permission_dialog_cant_ask_more">Permission declined and can\'t ask anymore</string>
+    <string name="permission_dialog_user_declined">Permission declined</string>
 </resources>

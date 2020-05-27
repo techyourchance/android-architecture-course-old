@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.techyourchance.mvc.R;
+import com.techyourchance.mvc.screens.common.dialogs.infodialog.InfoDialog;
 import com.techyourchance.mvc.screens.common.dialogs.promptdialog.PromptDialog;
 
 public class DialogsManager {
@@ -29,6 +30,33 @@ public class DialogsManager {
         dialogFragment.show(mFragmentManager, tag);
     }
 
+    public void showPermissionGrantedDialog(@Nullable String tag) {
+        DialogFragment dialogFragment = InfoDialog.newInfoDialog(
+                getString(R.string.permission_dialog_title),
+                getString(R.string.permission_dialog_granted_message),
+                getString(R.string.permission_dialog_button_caption)
+        );
+        dialogFragment.show(mFragmentManager, tag);
+    }
+
+    public void showPermissionDeclinedCantAskMoreDialog(@Nullable String tag) {
+        DialogFragment dialogFragment = InfoDialog.newInfoDialog(
+                getString(R.string.permission_dialog_title),
+                getString(R.string.permission_dialog_cant_ask_more),
+                getString(R.string.permission_dialog_button_caption)
+        );
+        dialogFragment.show(mFragmentManager, tag);
+    }
+
+    public void showDeclinedDialog(@Nullable String tag) {
+        DialogFragment dialogFragment = InfoDialog.newInfoDialog(
+                getString(R.string.permission_dialog_title),
+                getString(R.string.permission_dialog_user_declined),
+                getString(R.string.permission_dialog_button_caption)
+        );
+        dialogFragment.show(mFragmentManager, tag);
+    }
+
     private String getString(int stringId) {
         return mContext.getString(stringId);
     }
@@ -41,4 +69,5 @@ public class DialogsManager {
         }
         return null;
     }
+
 }
