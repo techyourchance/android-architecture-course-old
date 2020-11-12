@@ -1,10 +1,6 @@
 package com.techyourchance.mvc.screens.common.screensnavigator;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-
 import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameHelper;
-import com.techyourchance.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
 import com.techyourchance.mvc.screens.questiondetails.QuestionDetailsFragment;
 import com.techyourchance.mvc.screens.questionslist.QuestionsListFragment;
 

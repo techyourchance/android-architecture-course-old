@@ -1,7 +1,6 @@
 package com.techyourchance.mvc.common.dependencyinjection;
 
-import android.app.Activity;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.techyourchance.mvc.common.permissions.PermissionsHelper;
 import com.techyourchance.mvc.networking.StackoverflowApi;

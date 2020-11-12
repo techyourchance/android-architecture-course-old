@@ -2,13 +2,10 @@ package com.techyourchance.mvc.screens.common.dialogs.promptdialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatButton;
-import android.view.View;
-import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 
-import com.techyourchance.mvc.R;
 import com.techyourchance.mvc.screens.common.dialogs.BaseDialog;
 import com.techyourchance.mvc.screens.common.dialogs.DialogsEventBus;
 
